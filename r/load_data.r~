@@ -1,0 +1,37 @@
+## ---------------------------
+## Name: load data
+## Purpose: Load all components and group in the active list
+## Author: Jacob Tiegs
+## Date Created: 2022-04-03
+##
+## ---------------------------
+## Notes:
+##
+##
+## ---------------------------
+## Packages:
+require(tidyverse)
+
+##
+## ---------------------------
+## Functions:
+
+## ---------------------------
+
+
+load_data <- function(dir) {
+
+    files_l <- get_files(here(dir))
+    dtst_obj <- get_file_dtst(here(dir))
+    file_data <- get_data(files_l, dtst_obj)
+
+    out <- list(
+        files = files_l,
+        dtsts = dtst_obj,
+        dtst_int = file_data[1],
+        comments = file_data[2],
+        func = file_data[3],
+        meta_dtst = file_data[4]
+
+    )
+}

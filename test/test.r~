@@ -1,0 +1,16 @@
+## <<c this is a coment c>>
+x <- 1
+x
+
+## <<c this is a second comment c>>
+
+
+write_csv(data.frame(x), here("test/dat/test.csv"))
+write_rds(x, here("test/dat/test.rds"))
+write_xlsx(data.frame(x), here("test/test.xlsx"))
+
+
+test_func <- function(x = 1) {
+    x
+}
+

@@ -1,0 +1,94 @@
+## ---------------------------
+## Name: get dtst meta
+## Purpose: Returns the meta data for any given dataset
+## Author: Jacob Tiegs
+## Date Created: 2022-03-31
+##
+## ---------------------------
+## Notes:
+##
+##
+## ---------------------------
+## Packages:
+require(tidyverse)
+
+##
+## ---------------------------
+## Functions:
+
+## ---------------------------
+
+
+
+
+get_dtst_meta <- function(dtst) {
+    ## Define missing function
+    missing <- function(x){
+        missing = x[x == ""] %>% length
+        missing
+    }
+
+    ## Load dtst with try catch
+    dtst1 <- tryCatch(
+    {
+        if(str_detect(dtst, "csv|tsv")){
+            dtst_o = read_csv(here(dtst), show_col_types = FALSE)
+        } else if(str_detect(dtst, "xlsx")) {
+            dtst_o = read_xlsx(here(dtst))
+        } else if(str_detect(dtst, "sas7bdat")) {
+            dtst_o = read_sas(here(dtst))
+        }
+
+        ## switch variable name (fix later)
+        dtst1 <- dtst_o
+
+        ## Get values
+        l_nrow <- dtst1 %>% nrow
+        l_names <- dtst1 %>% names
+        type <- sapply(dtst1, class)
+        l_na <- sapply(dtst1, function(x) missing(x))
+
+        ## Combine values in df
+        meta_dtst <- tibble(nrow = rep(dtst1 %>% nrow, length(l_names)),
+                            var = l_names,
+                            class = type,
+                            missing = l_na)
+
+        ## Get top values of each variable
+        top_val <- lapply(dtst1, function(x){
+            x %>%
+                th(head = TRUE) %>%
+                rename(val = var)
+        }) %>% bind_rows(.id = "var")
+
+        message(names(top_val))
+        message(names(meta_dtst))
+
+        ## Output
+        out <- meta_dtst %>% left_join(top_val, by = "var")
+        ## out <- list(meta = meta_dtst,
+        ##             val = top_val )
+        out
+
+
+    },
+    error = function(cond, dtst){
+        message(paste("File extension not supported, file overview not possible: ", dtst))
+    }
+    )
+    dtst1
+
+
+}
+
+
+## ## Test
+## dtsts <- get_file_dtst(here("test"))
+## dtsts
+
+## names(dtsts) <- dtsts
+## names(dtsts)
+ meta <- lapply(dtsts, get_dtst_meta)
+## meta %>% str
+ meta
+meta$`test/dat/test.csv`$meta

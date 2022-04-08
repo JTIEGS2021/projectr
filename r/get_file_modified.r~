@@ -1,0 +1,22 @@
+## ---------------------------
+## Name: get file modified
+## Purpose: Returns time a file was last modified
+## Author: Jacob Tiegs
+## Date Created: 2022-04-03
+##
+## ---------------------------
+## Notes:
+##
+##
+## ---------------------------
+## Packages:
+
+
+##
+## ---------------------------
+## Functions:
+
+## ---------------------------
+
+get_file_modified <- function(file) %>%
+    file.info

@@ -1,0 +1,31 @@
+## ---------------------------
+## Name: init dbs
+## Purpose: initialize an empty database
+## Author: Jacob Tiegs
+## Date Created: 2022-04-03
+##
+## ---------------------------
+## Notes:
+##
+##
+## ---------------------------
+## Packages:
+require(tidyverse)
+
+##
+## ---------------------------
+## Functions:
+
+## ---------------------------
+
+if(!file.exists(here("dat/app_dbs.rds"))){
+    dbs = list(files = NULL,
+               dtsts = NULL,
+               dtst_int = NULL,
+               comments = NULL,
+               func = NULL,
+               meta_dtst = NULL)
+    write_rds(dbs, here("dat/app_dbs.rds"))
+}
+
+dbs

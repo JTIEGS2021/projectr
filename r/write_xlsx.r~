@@ -1,0 +1,22 @@
+## ---------------------------
+## Name: write_xlsx
+## Purpose: saves the merged current and dbs xlsx data
+## Author: Jacob Tiegs
+## Date Created: 2022-04-08
+##
+## ---------------------------
+## Notes:
+##
+##
+## ---------------------------
+## Packages:
+
+##
+## ---------------------------
+## Functions:
+
+## ---------------------------
+
+write_xlsx <- function(active, file) {
+    write.xlsx(active, file)
+}

@@ -1,0 +1,21 @@
+```{r }
+## <<c this is a
+## multiline comment c>>
+```
+
+
+<<c 
+this is a comment
+that is outside of the the code block
+c>>
+
+```{r }
+csv <- read_csv(here("test/dat/test.csv"))
+xlsx <- read_xlsx(here("test/test.xlsx"))
+
+```
+
+
+```{r }
+x <- test_func()
+```
