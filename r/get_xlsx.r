@@ -58,21 +58,25 @@ get_xlsx <- function(xlsx){
 
         ## write_rds(dbs, here(xlsx))
     } else {
-        ## load the database
-        print("File exists, reading data ...")
-
-        sheet_names <- excel_sheets(here("test.xlsx"))
-        dbs <- lapply(sheet_names, function(x){
-            as_tibble(read_excel("test.xlsx", sheet = x))})
-
-        names(dbs) <- sheet_names
-
-        dbs <- dbs %>%
-            lapply(function(x){
-                x = x %>%
-                    mutate(date = as_date(date))
-                x
-            })
+        dbs <- tryCatch({
+            ## load the database
+            print("File exists, reading data ...")
+            sheet_names <- excel_sheets(here("test.xlsx"))
+            dbs <- lapply(sheet_names, function(x){
+                as_tibble(read_excel("test.xlsx", sheet = x))})
+            names(dbs) <- sheet_names
+            dbs <- dbs %>%
+                lapply(function(x){
+                    x = x %>%
+                        mutate(date = as_date(date))
+                    x
+                })
+            dbs
+        },
+        error = function(c){
+            message("Error: get_xlsx.r")
+            message(c)
+        })
     }
 
     dbs <- dbs %>% lapply(function(x){

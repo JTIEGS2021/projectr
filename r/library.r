@@ -15,11 +15,14 @@
 
 ## ---------------------------
 
-require(tidyverse)
-require(shiny)
-require(here)
-require(writexl)
-require(readxl)
-require(writexl)
-require(openxlsx)
-require(lubridate)
+## require(tidyverse)
+## require(shiny)
+## require(here)
+## require(writexl)
+## require(readxl)
+## require(openxlsx)
+## require(lubridate)
+
+list.of.packages <- c("tidyverse", "shiny", "here", "writexl", "readxl", "openxlsx", "lubridate")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)

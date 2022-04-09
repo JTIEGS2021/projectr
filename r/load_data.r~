@@ -26,12 +26,22 @@ load_data <- function(dir) {
     file_data <- get_data(files_l, dtst_obj)
 
     out <- list(
-        files = files_l,
-        dtsts = dtst_obj,
-        dtst_int = file_data[1],
-        comments = file_data[2],
-        func = file_data[3],
-        meta_dtst = file_data[4]
-
+        files = tibble(file = files_l) %>%
+            mutate(load = TRUE),
+        dtsts = tibble(dtsts = dtst_obj)  %>%
+            mutate(load = TRUE),
+        dtst_int = file_data$dtst_int %>%
+            mutate(load = TRUE),
+        comments = file_data$comments %>%
+            mutate(load = TRUE),
+        func = file_data$func %>%
+            mutate(load = TRUE),
+        meta_dtst = file_data$dtst_meta %>%
+            mutate(load = TRUE)
     )
+
+    out
 }
+
+## Test
+## current <- load_data(here('test'))

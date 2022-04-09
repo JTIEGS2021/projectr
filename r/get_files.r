@@ -37,19 +37,23 @@ get_files <- function(dir,
     ## exclude <- c("~",
     ##              "#",
     ##              "[Rr][Dd][Ss]")
+    p_files <- tryCatch({
+        files <- list.files(dir,
+                            recursive = TRUE,
+                            full.names = TRUE)
+        include_files <-files[grepl(paste0(include, collapse = "|"),
+                                    files)]
+        exclude_files <- include_files[!grepl(paste0(exclude, collapse = "|"),
+                                              include_files)]
+        p_files <- gsub(root, "", exclude_files) %>%
+            gsub("^\\/", "",.)
 
-    files <- list.files(dir,
-                        recursive = TRUE,
-                        full.names = TRUE)
-
-    include_files <-files[grepl(paste0(include, collapse = "|"),
-                             files)]
-
-    exclude_files <- include_files[!grepl(paste0(exclude, collapse = "|"),
-                                         include_files)]
-
-    p_files <- gsub(root, "", exclude_files) %>%
-        gsub("^\\/", "",.)
+        p_files
+    },
+    error = function(c){
+        message("Error: get_files")
+        message(c)
+    })
 
     p_files
 }

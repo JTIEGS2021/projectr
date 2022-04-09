@@ -12,10 +12,10 @@
 ## Packages:
 get_file_dtst <- function(dir,
                           include = c("\\.[Rr][Dd][Ss]",
-                                       "\\.csv",
-                                       "\\.tsv",
-                                       "\\.[Xx][Ll][Ss][Xx]",
-                                       "\\.sas7bdat"),
+                                      "\\.csv",
+                                      "\\.tsv",
+                                      "\\.[Xx][Ll][Ss][Xx]",
+                                      "\\.sas7bdat"),
                           root = here()) {
 
     ## 1. Set project root
@@ -29,21 +29,28 @@ get_file_dtst <- function(dir,
 
     ## exclude <- c()
     ## Get list of files
-    files <- list.files(dir,
-                        recursive = TRUE,
-                        full.names = TRUE)
+    p_files <- tryCatch({
+        files <- list.files(dir,
+                            recursive = TRUE,
+                            full.names = TRUE)
 
-    ## Subset by Incldue
-    include_files <-files[grepl(paste0(include, collapse = "|"),
-                             files)]
+        ## Subset by Incldue
+        include_files <-files[grepl(paste0(include, collapse = "|"),
+                                    files)]
 
-    ## exclude_files <- include_files[!grepl(paste0(exclude, collapse = "|"),
-    ##                                      include_files)]
+        ## exclude_files <- include_files[!grepl(paste0(exclude, collapse = "|"),
+        ##                                      include_files)]
 
-    ## Clean file name
-    p_files <- gsub(root, "", include_files) %>%
-        gsub("^\\/", "",.)
+        ## Clean file name
+        p_files <- gsub(root, "", include_files) %>%
+            gsub("^\\/", "",.)
 
+        p_files
+    },
+    error = function(c){
+        message("Error: get_file_dtst.r")
+        message(c)
+    })
     p_files
 }
 

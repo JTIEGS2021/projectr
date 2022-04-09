@@ -13,13 +13,17 @@
 
 get_function <- function(file,
                          func_list){
-
-    func_collapse = paste0(func_list, collapse = "|")
-
-    funcs <- readLines(here(file)) %>%
-        str_match(func_collapse)
-
-    funcs[!is.na(funcs)]
+    funcs = tryCatch({
+        func_collapse = paste0(func_list, collapse = "|") %>% str_replace('\\"', "")
+        funcs <- readLines(here(file)) %>%
+            str_match(func_collapse)
+        funcs = funcs[!is.na(funcs)]
+        funcs},
+        error = function(c){
+            message("Error: get_function.r")
+            message(c)
+        })
+    funcs
 }
 
 ## Test

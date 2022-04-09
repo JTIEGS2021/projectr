@@ -13,8 +13,7 @@
 ## Packages:
 ##
 ## ---------------------------
-## Functions:
-source(here("r/get_files.r"))
+## Functions
 ## ---------------------------
 
 ## Set replace characters
@@ -34,15 +33,20 @@ get_comments <- function(file,
                                      "## ",
                                      "```")
                          ){
-    file <- readLines(here(file)) %>%
-        paste0(collapse = "|") %>%
-        str_extract_all(regex("<<c.*?c>>")) %>%
-        unlist() %>%
-        str_replace_all(paste0(replace, collapse = "|"),"") %>%
-        str_trim() %>%
-        str_replace_all("\\|", "\n")
+    file <- tryCatch({
+        readLines(here(file)) %>%
+            paste0(collapse = "|") %>%
+            str_extract_all(regex("<<c.*?c>>")) %>%
+            unlist() %>%
+            str_replace_all(paste0(replace, collapse = "|"),"") %>%
+            str_trim() %>%
+            str_replace_all("\\|", "\n")},
+        error = function(c){
+            message("Error: get_comments.r")
+            message(c)
+        })
     file
-}
+    }
 
 
 

@@ -20,26 +20,32 @@ require(tidyverse)
 
 get_internal_dtsts <- function(file,
                                include =
-                                         c("\\.[Rr][Dd][Ss]",
-                                           "\\.csv",
-                                           "\\.tsv",
-                                           "\\.[Xx][Ll][Ss][Xx]",
-                                           "\\.sas7bdat")
+                                   c("\\.[Rr][Dd][Ss]",
+                                     "\\.csv",
+                                     "\\.tsv",
+                                     "\\.[Xx][Ll][Ss][Xx]",
+                                     "\\.sas7bdat")
                                ){
     ## collapse list
     inc <- paste0(include, collapse = "|")
 
-    dtst <- readLines(here(file)) %>%
-        str_subset(paste0(include, collapse = "|")) %>%
-        as_tibble() %>%
-        mutate(dtst = str_extract(value, paste0("\"(.*",
-                                                "[",
-                                                inc,
-                                                "])"))) %>%
-        mutate(dtst = str_replace(dtst, "\\\"", "")) %>%
-        mutate(type = str_extract(value, "read|write"))
+    dtst = tryCatch({
+        dtst <- readLines(here(file)) %>%
+            str_subset(paste0(include, collapse = "|")) %>%
+            as_tibble() %>%
+            mutate(dtst = str_extract(value, paste0("\"(.*",
+                                                    "[",
+                                                    inc,
+                                                    "])"))) %>%
+            mutate(dtst = str_replace(dtst, "\\\"", "")) %>%
+            mutate(type = str_extract(value, "read|write"))
 
-    dtst
+        dtst
+    },
+    error = function(c){
+        message("Error: get_internal_dtst.r")
+        message(c)
+    })
 }
 
 

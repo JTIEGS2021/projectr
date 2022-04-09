@@ -25,21 +25,27 @@ load_data <- function(dir) {
     dtst_obj <- get_file_dtst(here(dir))
     file_data <- get_data(files_l, dtst_obj)
 
-    out <- list(
-        files = tibble(file = files_l) %>%
-            mutate(load = TRUE),
-        dtsts = tibble(dtsts = dtst_obj)  %>%
-            mutate(load = TRUE),
-        dtst_int = file_data$dtst_int %>%
-            mutate(load = TRUE),
-        comments = file_data$comments %>%
-            mutate(load = TRUE),
-        func = file_data$func %>%
-            mutate(load = TRUE),
-        meta_dtst = file_data$dtst_meta %>%
-            mutate(load = TRUE)
-    )
-
+    out <- tryCatch({
+        out <- list(
+            files = tibble(file = files_l) %>%
+                mutate(load = TRUE),
+            dtsts = tibble(dtsts = dtst_obj)  %>%
+                mutate(load = TRUE),
+            dtst_int = file_data$dtst_int %>%
+                mutate(load = TRUE),
+            comments = file_data$comments %>%
+                mutate(load = TRUE),
+            func = file_data$func %>%
+                mutate(load = TRUE),
+            meta_dtst = file_data$dtst_meta %>%
+                mutate(load = TRUE)
+        )
+        out
+    },
+    error = function(c){
+        message("Error: load_data.r")
+        message(c)
+    })
     out
 }
 

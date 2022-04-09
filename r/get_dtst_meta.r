@@ -10,7 +10,6 @@
 ##
 ## ---------------------------
 ## Packages:
-require(tidyverse)
 
 ##
 ## ---------------------------
@@ -70,8 +69,10 @@ get_dtst_meta <- function(dtst) {
 
     },
     error = function(cond){
+        message("Error: get_dtst_meta.r")
         message(paste("File extension not supported, file overview not possible: ",
                       dtst))
+        message(c)
     }
     )
     dtst1
